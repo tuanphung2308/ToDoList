@@ -1,4 +1,4 @@
-package com.example.tuanp.todolist;
+package com.example.tuanp.todolist.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,8 +8,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import com.example.tuanp.todolist.R;
+import com.example.tuanp.todolist.adapters.ToDoListArrayAdaptor;
+import com.example.tuanp.todolist.models.ToDoTask;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
+
+    ArrayList<ToDoTask> dataModels;
+    ListView listView;
+    private static ToDoListArrayAdaptor adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        listView = (ListView) findViewById(R.id.list);
+        dataModels = new ArrayList<>();
+        dataModels.add(new ToDoTask("Brush teeth"));
+        dataModels.add(new ToDoTask("Poop"));
+        adapter = new ToDoListArrayAdaptor(dataModels, getApplicationContext());
+        listView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -24,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                dataModels.add(new ToDoTask(UUID.randomUUID().toString()));
+                adapter.updateList();
             }
         });
     }
